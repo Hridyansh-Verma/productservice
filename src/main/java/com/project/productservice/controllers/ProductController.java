@@ -1,8 +1,11 @@
 package com.project.productservice.controllers;
 
+import com.project.productservice.models.Category;
 import com.project.productservice.models.Product;
 import com.project.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,23 +24,25 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable("id")Long id)
+    public ResponseEntity<Product> getProduct(@PathVariable("id")Long id)
     {
-        return productService.getSingleProduct(id);
+        return new ResponseEntity<>(productService.getSingleProduct(id), HttpStatus.ACCEPTED);
     }
-    @GetMapping("/all")
-    public List<Product> getAllProducts() { return productService.getAllProducts();}
-    @PostMapping("/{id}")
-    public Product addNewProduct(@PathVariable("id") Long id,@RequestBody Product product)
+    @GetMapping("")
+    public ResponseEntity<List<Product>> getAllProducts() {
+        return new ResponseEntity<>(productService.getAllProducts(),HttpStatus.ACCEPTED);
+    }
+    @PostMapping("")
+    public ResponseEntity<Product> addNewProduct(@RequestBody Product product)
     {
-        return productService.addNewProduct(id,product);
+        return new ResponseEntity<>(productService.addNewProduct(product),HttpStatus.NOT_FOUND);
     }
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public Product updateProduct(@PathVariable("id") Long id,@RequestBody Product product)
     {
         return productService.updateProduct(id,product);
     }
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public Product replaceProduct(@PathVariable("id") Long id,@RequestBody Product product)
     {
         return productService.replaceProduct(id,product);
@@ -46,5 +51,10 @@ public class ProductController {
     public void deleteProduct(@PathVariable("id") Long id)
     {
         productService.deleteProduct(id);
+    }
+    @GetMapping("/category/{category}")
+    public List<Product> getAllCategories(@PathVariable("category") String category)
+    {
+        return productService.getProductsOfCategory(category);
     }
 }

@@ -12,5 +12,4 @@ public class Product {
     Double price;
     String imageUrl;
     Category category;
-
 }
