@@ -1,5 +1,6 @@
 package com.project.productservice.services;
 
+import com.project.productservice.exceptions.ProductNotFoundException;
 import com.project.productservice.models.Category;
 import com.project.productservice.models.Product;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,7 @@ import java.util.List;
 
 @Service
 public interface ProductService {
-    public Product getSingleProduct(Long id) ;
+    public Product getSingleProduct(Long id) throws ProductNotFoundException;
 
     List<Product> getAllProducts();
 

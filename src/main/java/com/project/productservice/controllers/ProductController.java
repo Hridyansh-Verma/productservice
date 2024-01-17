@@ -1,5 +1,7 @@
 package com.project.productservice.controllers;
 
+import com.project.productservice.dtos.ExceptionDto;
+import com.project.productservice.exceptions.ProductNotFoundException;
 import com.project.productservice.models.Category;
 import com.project.productservice.models.Product;
 import com.project.productservice.services.ProductService;
@@ -24,8 +26,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable("id")Long id)
-    {
+    public ResponseEntity<Product> getProduct(@PathVariable("id")Long id) throws ProductNotFoundException {
         return new ResponseEntity<>(productService.getSingleProduct(id), HttpStatus.ACCEPTED);
     }
     @GetMapping("")
@@ -56,5 +57,12 @@ public class ProductController {
     public List<Product> getAllCategories(@PathVariable("category") String category)
     {
         return productService.getProductsOfCategory(category);
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionDto> handleProductNotFoundException(ProductNotFoundException productNotFoundException)
+    {
+        ExceptionDto exceptionDto= new ExceptionDto();
+        exceptionDto.setMessage("From Class");
+        return new ResponseEntity<>(exceptionDto,HttpStatus.NOT_FOUND);
     }
 }
