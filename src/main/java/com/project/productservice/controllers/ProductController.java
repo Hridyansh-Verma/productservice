@@ -6,6 +6,7 @@ import com.project.productservice.models.Category;
 import com.project.productservice.models.Product;
 import com.project.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ProductController {
     private RestTemplate restTemplate;
     private ProductService productService;
     @Autowired
-    public ProductController(RestTemplate restTemplate, ProductService productService) {
+    public ProductController(RestTemplate restTemplate, @Qualifier("selfProductService") ProductService productService) {
         this.restTemplate = restTemplate;
         this.productService = productService;
     }

@@ -18,7 +18,7 @@ import java.util.List;
 
 import static java.util.Objects.nonNull;
 
-@Service
+@Service("fakeStoreProductService")
 public class FakeStoreProductService implements ProductService{
     private RestTemplate restTemplate;
     @Autowired
