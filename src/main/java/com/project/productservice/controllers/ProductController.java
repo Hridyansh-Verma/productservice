@@ -1,6 +1,7 @@
 package com.project.productservice.controllers;
 
 import com.project.productservice.dtos.ExceptionDto;
+import com.project.productservice.exceptions.CategoryNotFoundException;
 import com.project.productservice.exceptions.ProductNotFoundException;
 import com.project.productservice.models.Category;
 import com.project.productservice.models.Product;
@@ -37,16 +38,14 @@ public class ProductController {
     @PostMapping("")
     public ResponseEntity<Product> addNewProduct(@RequestBody Product product)
     {
-        return new ResponseEntity<>(productService.addNewProduct(product),HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(productService.addNewProduct(product),HttpStatus.FOUND);
     }
     @PatchMapping("/{id}")
-    public Product updateProduct(@PathVariable("id") Long id,@RequestBody Product product)
-    {
+    public Product updateProduct(@PathVariable("id") Long id,@RequestBody Product product) throws ProductNotFoundException {
         return productService.updateProduct(id,product);
     }
     @PutMapping("/{id}")
-    public Product replaceProduct(@PathVariable("id") Long id,@RequestBody Product product)
-    {
+    public Product replaceProduct(@PathVariable("id") Long id,@RequestBody Product product) throws ProductNotFoundException {
         return productService.replaceProduct(id,product);
     }
     @DeleteMapping("/{id}")
@@ -54,16 +53,18 @@ public class ProductController {
     {
         productService.deleteProduct(id);
     }
+
     @GetMapping("/category/{category}")
-    public List<Product> getAllCategories(@PathVariable("category") String category)
-    {
+    public List<Product> getAllCategories(@PathVariable("category") String category) throws CategoryNotFoundException {
         return productService.getProductsOfCategory(category);
     }
+
+    /* Class Exception Handler
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionDto> handleProductNotFoundException(ProductNotFoundException productNotFoundException)
+    public ResponseEntity<ExceptionDto> handleProductNotFoundException(Exception exception)
     {
         ExceptionDto exceptionDto= new ExceptionDto();
         exceptionDto.setMessage("From Class");
         return new ResponseEntity<>(exceptionDto,HttpStatus.NOT_FOUND);
-    }
+    }*/
 }
