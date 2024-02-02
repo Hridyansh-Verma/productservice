@@ -14,7 +14,8 @@ import java.util.Random;
 @Setter
 @Entity
 public class Category extends BaseModel{
-    String name;
+    private String name;
+    private String description;
     @OneToMany(mappedBy = "category",cascade = {CascadeType.REMOVE})
     List<Product> productList;
     public Category(String string) {

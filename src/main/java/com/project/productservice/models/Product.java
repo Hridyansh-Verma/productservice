@@ -15,6 +15,7 @@ public class Product extends BaseModel{
     String description;
     Double price;
     String imageUrl;
+    int numberOfSales;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     Category category;
 }
