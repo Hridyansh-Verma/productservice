@@ -33,7 +33,13 @@ public class ProductController {
     }
     @GetMapping("")
     public ResponseEntity<List<Product>> getAllProducts() {
-        return new ResponseEntity<>(productService.getAllProducts(),HttpStatus.ACCEPTED);
+        List<Product> productList=productService.getAllProducts();
+//        Using for making wrong assert in test case
+//        for (Product product:productList)
+//        {
+//            product.setTitle("Hello "+ product.getTitle());
+//        }
+        return new ResponseEntity<>(productList,HttpStatus.ACCEPTED);
     }
     @PostMapping("")
     public ResponseEntity<Product> addNewProduct(@RequestBody Product product)
