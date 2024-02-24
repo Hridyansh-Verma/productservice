@@ -50,7 +50,7 @@ class ProductControllerTest {
           productList
         );
         //act
-        ResponseEntity<List<Product>> listResponseEntity=productController.getAllProducts();
+        ResponseEntity<List<Product>> listResponseEntity=productController.getAllProducts("dsfsdfsdfdsfsdfds");
 
         assertEquals(productList.size(),listResponseEntity.getBody().size());
         for(int i=0;i<listResponseEntity.getBody().size();i++)

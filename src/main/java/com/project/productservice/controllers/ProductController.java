@@ -1,6 +1,9 @@
 package com.project.productservice.controllers;
 
+import com.project.productservice.common.AuthenticationCommon;
 import com.project.productservice.dtos.ExceptionDto;
+import com.project.productservice.dtos.Role;
+import com.project.productservice.dtos.UserDto;
 import com.project.productservice.exceptions.CategoryNotFoundException;
 import com.project.productservice.exceptions.ProductNotFoundException;
 import com.project.productservice.models.Category;
@@ -21,10 +24,14 @@ import java.util.List;
 public class ProductController {
     private RestTemplate restTemplate;
     private ProductService productService;
+    private AuthenticationCommon authenticationCommon;
     @Autowired
-    public ProductController(RestTemplate restTemplate, @Qualifier("selfProductService") ProductService productService) {
+    public ProductController(RestTemplate restTemplate,
+                             @Qualifier("selfProductService") ProductService productService,
+                             AuthenticationCommon authenticationCommon) {
         this.restTemplate = restTemplate;
         this.productService = productService;
+        this.authenticationCommon=authenticationCommon;
     }
 
     @GetMapping("/{id}")
@@ -32,7 +39,24 @@ public class ProductController {
         return new ResponseEntity<>(productService.getSingleProduct(id), HttpStatus.ACCEPTED);
     }
     @GetMapping("")
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<Product>> getAllProducts(@RequestHeader("AuthenticationToken") String token) {
+        UserDto userDto=authenticationCommon.validateToken(token);
+        if(userDto==null)
+        {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        boolean isAdmin=false;
+        for(Role role:userDto.getRoles())
+        {
+            if(role.getName().equals("ADMIN"))
+            {
+               isAdmin = true;
+            }
+        }
+        if(!isAdmin)
+        {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         List<Product> productList=productService.getAllProducts();
 //        Using for making wrong assert in test case
 //        for (Product product:productList)
