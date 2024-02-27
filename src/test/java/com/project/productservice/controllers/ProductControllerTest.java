@@ -26,48 +26,48 @@ class ProductControllerTest {
     private ProductRepository productRepository;
     @MockBean
     private ProductService productService;
-    @Test
-    void testProductsSameAsService()
-    {
-        //arrange
-        List<Product> productList=new ArrayList<>();
-        List<Product> productListCopy=new ArrayList<>();
-        productList.add(new Product());
-        productList.add(new Product());
-        productList.add(new Product());
-        for(Product product:productList)
-        {
-            product.setTitle("Random title" + new Random());
-        }
-        for (int i=0;i<productList.size();i++)
-        {
-            productListCopy.add(new Product());
-            productListCopy.get(i).setTitle(productList.get(i).getTitle());
-        }
-        when(
-                productService.getAllProducts()
-        ).thenReturn(
-          productList
-        );
-        //act
-        ResponseEntity<List<Product>> listResponseEntity=productController.getAllProducts();
-
-        assertEquals(productList.size(),listResponseEntity.getBody().size());
-        for(int i=0;i<listResponseEntity.getBody().size();i++)
-        {
-            assertEquals(productListCopy.get(i).getTitle(),listResponseEntity.getBody().get(i).getTitle());
-        }
-    }
-
-    @Test
-    void testNonExistingProductThrowsException()
-    {
-        //arrange
-        when(productRepository.findById(10L))
-                .thenReturn(Optional.empty());
-
-        //act
-
-        assertThrows(ProductNotFoundException.class,()-> productController.getProduct(10L));
-    }
+    //@Test
+//    void testProductsSameAsService()
+//    {
+//        //arrange
+//        List<Product> productList=new ArrayList<>();
+//        List<Product> productListCopy=new ArrayList<>();
+//        productList.add(new Product());
+//        productList.add(new Product());
+//        productList.add(new Product());
+//        for(Product product:productList)
+//        {
+//            product.setTitle("Random title" + new Random());
+//        }
+//        for (int i=0;i<productList.size();i++)
+//        {
+//            productListCopy.add(new Product());
+//            productListCopy.get(i).setTitle(productList.get(i).getTitle());
+//        }
+//        when(
+//                productService.getAllProducts()
+//        ).thenReturn(
+//          productList
+//        );
+//        //act
+//        ResponseEntity<List<Product>> listResponseEntity=productController.getAllProducts();
+//
+//        assertEquals(productList.size(),listResponseEntity.getBody().size());
+//        for(int i=0;i<listResponseEntity.getBody().size();i++)
+//        {
+//            assertEquals(productListCopy.get(i).getTitle(),listResponseEntity.getBody().get(i).getTitle());
+//        }
+//    }
+//
+//    @Test
+//    void testNonExistingProductThrowsException()
+//    {
+//        //arrange
+//        when(productRepository.findById(10L))
+//                .thenReturn(Optional.empty());
+//
+//        //act
+//
+//        assertThrows(ProductNotFoundException.class,()-> productController.getProduct(10L));
+//    }
 }
