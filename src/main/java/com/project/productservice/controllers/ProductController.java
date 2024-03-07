@@ -27,7 +27,7 @@ public class ProductController {
     private AuthenticationCommon authenticationCommon;
     @Autowired
     public ProductController(RestTemplate restTemplate,
-                             @Qualifier("selfProductService") ProductService productService,
+                             @Qualifier("fakeStoreProductService") ProductService productService,
                              AuthenticationCommon authenticationCommon) {
         this.restTemplate = restTemplate;
         this.productService = productService;
